@@ -3,7 +3,8 @@
     "description": "",
     "dependencies": {
         "device": "*",
-        "arcade-sprite-util": "github:jwunderl/arcade-sprite-util#v0.0.11"
+        "arcade-sprite-util": "github:jwunderl/arcade-sprite-util#v0.0.11",
+        "Color Fading": "github:jwunderl/pxt-color#v0.2.0"
     },
     "files": [
         "main.blocks",

@@ -157,6 +157,9 @@ function MakeStartWorld () {
         WidthOfPieceOfLand = randint(1, 10)
         Map.fillRect(HowMuchLandComplete, CurrentHightForMakingWorld, WidthOfPieceOfLand, 114 - CurrentHightForMakingWorld, 14)
         HowMuchLandComplete += WidthOfPieceOfLand
+        if (Math.percentChance(10)) {
+            MakeTrees()
+        }
     }
     EndingHightForMakingWorld = CurrentHightForMakingWorld
     scene.setBackgroundImage(Map)
@@ -328,6 +331,9 @@ function MakeLeftWorld () {
         Map.fillRect(HowMuchLandComplete, CurrentHightForMakingWorld, WidthOfPieceOfLand, 114 - CurrentHightForMakingWorld, 14)
         // Resets the "How much land complete" variable.
         HowMuchLandComplete += WidthOfPieceOfLand
+        if (Math.percentChance(10)) {
+            MakeTrees()
+        }
     }
     // Sets the starting height. This is actually the ending height for the make left function.
     StartingHightForMakingWorld = CurrentHightForMakingWorld
@@ -338,6 +344,37 @@ function MakeLeftWorld () {
     StartingHights.unshift(StartingHightForMakingWorld)
     EndingHights.unshift(parseFloat("" + EndingHightForMakingWorld))
     Maps.unshift(Map)
+}
+function MakeTrees () {
+    TreeHeight = randint(2, 4)
+    for (let TreeHeightIndex = 0; TreeHeightIndex <= TreeHeight; TreeHeightIndex++) {
+        spriteutils.drawTransparentImage(Trunk, Map, HowMuchLandComplete, CurrentHightForMakingWorld - 8 * TreeHeightIndex)
+    }
+    for (let index = 0; index < 30; index++) {
+        if (Math.percentChance(30)) {
+            spriteutils.drawTransparentImage(img`
+                . . 6 6 7 6 . . 
+                . 7 7 7 6 6 6 . 
+                6 6 6 6 6 6 6 6 
+                6 7 7 7 6 6 6 6 
+                6 6 6 6 7 7 7 6 
+                6 6 6 7 7 6 6 7 
+                . 6 6 6 6 6 6 . 
+                . . 6 6 6 6 . . 
+                `, Map, randint(HowMuchLandComplete - 8, HowMuchLandComplete + 8), randint(CurrentHightForMakingWorld - 8 * TreeHeight + 4, CurrentHightForMakingWorld - 8 * TreeHeight - 4))
+        } else {
+            spriteutils.drawTransparentImage(img`
+                . . 7 7 6 6 . . 
+                . 7 7 6 7 7 7 . 
+                7 7 7 7 7 7 7 7 
+                7 7 7 6 6 7 7 7 
+                6 6 6 7 7 7 7 7 
+                7 7 7 6 7 7 7 7 
+                . 7 7 7 6 7 6 . 
+                . . 7 7 7 7 . . 
+                `, Map, randint(HowMuchLandComplete - 8, HowMuchLandComplete + 8), randint(CurrentHightForMakingWorld - 8 * TreeHeight + 4, CurrentHightForMakingWorld - 8 * TreeHeight - 4))
+        }
+    }
 }
 function MoveCursor () {
     if (controller.player2.isPressed(ControllerButton.Left)) {
@@ -504,6 +541,9 @@ function MakeRightWorld () {
         WidthOfPieceOfLand = randint(1, 10)
         Map.fillRect(HowMuchLandComplete, CurrentHightForMakingWorld, WidthOfPieceOfLand, 114 - CurrentHightForMakingWorld, 14)
         HowMuchLandComplete += WidthOfPieceOfLand
+        if (Math.percentChance(10)) {
+            MakeTrees()
+        }
     }
     EndingHightForMakingWorld = CurrentHightForMakingWorld
     scene.setBackgroundImage(Map)
@@ -512,6 +552,7 @@ function MakeRightWorld () {
     Maps.push(Map)
     CurrentMap += 1
 }
+let TreeHeight = 0
 let CurrentMap = 0
 let Maps: Image[] = []
 let EndingHights: number[] = []
@@ -524,7 +565,7 @@ let CurrentHightForMakingWorld = 0
 let StartingHightForMakingWorld = 0
 let Map: Image = null
 let PlayerSprite: Sprite = null
-MakeStartWorld()
+let Trunk: Image = null
 // Dave
 // Jayden
 // Caroline
@@ -631,6 +672,17 @@ img`
     . c . c . 
     `
 ]
+Trunk = img`
+    f c d d c d b c 
+    f c d b c d b f 
+    b c d b c d b f 
+    b d d b c f b b 
+    d b d c b f c b 
+    c b d c b f c b 
+    c b d d b f d b 
+    b d d d d c d b 
+    `
+MakeStartWorld()
 scene.setBackgroundColor(9)
 PlayerSprite = sprites.create(img`
     . 1 1 1 1 
@@ -752,12 +804,12 @@ game.onUpdate(function () {
         CursorY = -12
     }
     if (controller.A.isPressed()) {
-        for (let index = 0; index <= 2; index++) {
+        for (let TreeHeightIndex = 0; TreeHeightIndex <= 2; TreeHeightIndex++) {
             spriteutils.drawCircle(
             Maps[CurrentMap],
             Cursor.x - 1,
             Cursor.y - 1,
-            index + 1,
+            TreeHeightIndex + 1,
             0
             )
             Maps[CurrentMap].fillRect(Cursor.x - 2, Cursor.y - 2, 3, 3, 0)
